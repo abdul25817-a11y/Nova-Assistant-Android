@@ -37,6 +37,6 @@ class LocalBrainTest {
 
     @Test
     fun unknownPromptStillGetsOfflineReply() {
-        assertTrue(LocalBrain.reply("something unfamiliar").contains("offline mode"))
+        assertTrue(LocalBrain.reply("something unfamiliar").let { it.contains("offline mode") || it.contains("آف لائن موڈ") })
     }
 }
