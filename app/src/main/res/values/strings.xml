@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Nova</string>
+    <string name="settings_title">Settings</string>
+    <string name="accessibility_label">Nova Voice Control</string>
+    <string name="accessibility_desc">Lets Nova tap, scroll and type on your behalf using your voice.</string>
+    <string name="wallpaper_label">Nova Live Wallpaper</string>
+
+    <string name="hint_message">Ask Nova anything…</string>
+    <string name="action_send">Send</string>
+    <string name="action_mic">Voice input</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_clear">Clear chat</string>
+    <string name="action_voice">Toggle voice mode</string>
+
+    <string name="notif_channel_service">Nova Assistant</string>
+    <string name="notif_channel_service_desc">Keeps the voice assistant ready</string>
+    <string name="notif_title">Nova is listening</string>
+    <string name="notif_text">Say \"Hey Nova\" to talk</string>
+    <string name="stop_action">Stop</string>
+
+    <string name="wake_word">hey nova</string>
+    <string name="listening">Listening…</string>
+    <string name="thinking">Thinking…</string>
+
+    <string name="settings_api_key">AI API Key (optional)</string>
+    <string name="settings_api_key_hint">Leave empty for offline mode</string>
+    <string name="settings_model">Model (custom endpoint)</string>
+    <string name="settings_model_hint">e.g. llama-3</string>
+    <string name="settings_base_url">AI Endpoint URL (optional)</string>
+    <string name="settings_base_url_hint">https://your-endpoint/v1</string>
+    <string name="settings_offline_note">Nova works fully offline by default. Only add an endpoint and key if you already have access to an AI service. No account or paid plan is required.</string>
+    <string name="settings_enable_wake">Enable \"Hey Nova\" wake word</string>
+    <string name="settings_save">Save</string>
+    <string name="saved">Saved</string>
+    <string name="no_api_key">Add an API key in Settings first</string>
+    <string name="error_generic">Something went wrong</string>
+
+    <string name="wakeword_prompt">Say \"Hey Nova\"</string>
+    <string name="tap_to_talk">Tap to talk</string>
+
+    <string name="cleared">Chat cleared</string>
+    <string name="mic_permission_needed">Microphone permission is needed for voice input</string>
+    <string name="speech_unavailable">Speech recognition is not available on this device</string>
+    <string name="speech_error">Could not understand speech. Please try again.</string>
+    <string name="voice_started">Voice assistant started</string>
+    <string name="voice_stopped">Voice assistant stopped</string>
+    <string name="voice_permission_needed">Microphone and notification permissions are needed for voice mode</string>
+    <string name="accessibility_hint">Enable Nova Voice Control in Accessibility settings to allow voice actions.</string>
+</resources>
