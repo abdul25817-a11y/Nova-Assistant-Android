@@ -1,6 +1,6 @@
 package com.nova.assistant.automation
 
-import android.accessibilityservice.AccessibilityEvent
+import android.view.accessibility.AccessibilityEvent
 import android.accessibilityservice.AccessibilityService
 import android.view.accessibility.AccessibilityNodeInfo
 

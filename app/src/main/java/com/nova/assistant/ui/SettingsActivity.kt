@@ -1,4 +1,5 @@
 package com.nova.assistant.ui
+import com.nova.assistant.R
 
 import android.os.Bundle
 import android.widget.Toast
