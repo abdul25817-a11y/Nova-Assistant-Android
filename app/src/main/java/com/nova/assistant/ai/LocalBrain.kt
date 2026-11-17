@@ -77,7 +77,13 @@ internal object LocalBrain {
     }
 
     private fun matches(text: String, vararg words: String) =
-        words.any { w -> text == w || text.contains(w) }
+        words.any { w ->
+            if (w.any { it in '\u0600'..'\u06FF' }) {
+                text.contains(w)
+            } else {
+                Regex("(?<![a-z0-9])" + Regex.escape(w) + "(?![a-z0-9])", RegexOption.IGNORE_CASE).containsMatchIn(text)
+            }
+        }
 
     private fun pick(urdu: Boolean, en: String, ur: String) = if (urdu) ur else en
 
