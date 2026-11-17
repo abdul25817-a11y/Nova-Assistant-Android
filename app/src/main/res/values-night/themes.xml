@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.Nova" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/nova_primary</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorPrimaryDark">@color/nova_primary_dark</item>
+        <item name="colorSecondary">@color/nova_accent</item>
+        <item name="colorSurface">@color/nova_surface</item>
+        <item name="colorOnSurface">@color/nova_on_surface</item>
+        <item name="android:colorBackground">@color/nova_bg</item>
+        <item name="android:windowBackground">@color/nova_bg</item>
+        <item name="android:statusBarColor">@color/nova_header_end</item>
+        <item name="android:navigationBarColor">@color/nova_surface</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowAnimationStyle">@style/Animation.Nova</item>
+    </style>
+</resources>

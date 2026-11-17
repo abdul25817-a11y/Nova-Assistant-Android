@@ -47,4 +47,34 @@
     <string name="voice_stopped">وائس اسسٹنٹ رک گیا</string>
     <string name="voice_permission_needed">وائس موڈ کے لیے مائیکروفون اور اطلاعات کی اجازت درکار ہے</string>
     <string name="accessibility_hint">وائس ایکشنز کے لیے رسائی کی ترتیبات میں Nova Voice Control کو چالو کریں۔</string>
+
+    <string name="empty_chat_title">آپ کے ذہن میں کیا ہے؟</string>
+    <string name="empty_chat_subtitle">نووا سے کچھ بھی پوچھیں، یا بولنے کے لیے مائیک دبائیں۔</string>
+    <string name="avatar_letter">ن</string>
+
+    <string name="home_greeting">خوش آمدید</string>
+    <string name="home_subtitle">آپ کا ذاتی AI ساتھی</string>
+    <string name="home_quick_actions">فوری اعمال</string>
+    <string name="home_chat">گفتگو</string>
+    <string name="home_chat_desc">اردو یا انگریزی میں کچھ بھی پوچھیں</string>
+    <string name="home_voice">وائس موڈ</string>
+    <string name="home_voice_desc">بغیر ہاتھ لگائے گفتگو</string>
+    <string name="home_settings_desc">فراہم کنندہ، ماڈل اور وییک ورڈ</string>
+
+    <string name="section_ai">AI فراہم کنندہ</string>
+    <string name="section_voice">آواز</string>
+    <string name="choose_model">پری سیٹ منتخب کریں</string>
+
+    <string name="model_picker_title">ماڈل منتخب کریں</string>
+    <string name="model_picker_note">پری سیٹ پتہ اور ماڈل کا نام بھر دیتے ہیں۔ کلید آپ کی اپنی درکار ہے۔ کوئی کلید شامل نہیں کی گئی۔</string>
+    <string name="model_preset_local">ڈیوائس پر (آف لائن)</string>
+    <string name="model_preset_local_desc">بلٹ ان آف لائن برین استعمال کرتا ہے۔ کلید یا انٹرنیٹ کی ضرورت نہیں۔</string>
+    <string name="model_preset_openai">OpenAI</string>
+    <string name="model_preset_openai_desc">سرکاری API پتہ۔ آپ کی اپنی کلید درکار ہے۔</string>
+    <string name="model_preset_openrouter">OpenRouter</string>
+    <string name="model_preset_openrouter_desc">OpenAI ہم آہنگ گیٹ وے۔ آپ کی اپنی کلید درکار ہے۔</string>
+    <string name="model_preset_groq">Groq</string>
+    <string name="model_preset_groq_desc">تیز OpenAI ہم آہنگ پتہ۔ آپ کی اپنی کلید درکار ہے۔</string>
+    <string name="model_preset_gemini">Gemini</string>
+    <string name="model_preset_gemini_desc">Google کا OpenAI ہم آہنگ پتہ۔ آپ کی اپنی کلید درکار ہے۔</string>
 </resources>

@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.speech.RecognitionListener
 import android.speech.RecognizerIntent
 import android.speech.SpeechRecognizer
+import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -64,9 +65,14 @@ class MainActivity : AppCompatActivity() {
             sendCurrentInput()
             true
         }
+
+        if (intent.getBooleanExtra(EXTRA_START_VOICE, false)) {
+            toggleVoiceMode()
+        }
     }
 
     private fun setupToolbar() {
+        binding.toolbar.setNavigationOnClickListener { finish() }
         binding.toolbar.title = getString(R.string.app_name)
         binding.toolbar.inflateMenu(R.menu.menu_main)
         binding.toolbar.setOnMenuItemClickListener { item ->
@@ -94,6 +100,7 @@ class MainActivity : AppCompatActivity() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.messages.collect { list ->
                     adapter.submit(list)
+                    binding.emptyHint.visibility = if (list.isEmpty()) View.VISIBLE else View.GONE
                     if (list.isNotEmpty()) binding.recycler.scrollToPosition(list.size - 1)
                 }
             }
@@ -252,5 +259,9 @@ class MainActivity : AppCompatActivity() {
         speechRecognizer?.destroy()
         speechRecognizer = null
         super.onDestroy()
+    }
+
+    companion object {
+        const val EXTRA_START_VOICE = "startVoice"
     }
 }

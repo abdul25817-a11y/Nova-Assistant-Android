@@ -1,8 +1,10 @@
 package com.nova.assistant.ui
 import com.nova.assistant.R
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.nova.assistant.data.NovaSettings
@@ -15,6 +17,18 @@ class SettingsActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySettingsBinding
     private lateinit var store: SettingsStore
+
+    private val modelPickerLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == RESULT_OK) {
+                result.data?.getStringExtra(ModelPickerActivity.EXTRA_MODEL)?.let {
+                    binding.model.setText(it)
+                }
+                result.data?.getStringExtra(ModelPickerActivity.EXTRA_BASE_URL)?.let {
+                    binding.baseUrl.setText(it)
+                }
+            }
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,6 +46,9 @@ class SettingsActivity : AppCompatActivity() {
             binding.switchWake.isChecked = current.wakeWordEnabled
         }
 
+        binding.btnPickModel.setOnClickListener {
+            modelPickerLauncher.launch(Intent(this, ModelPickerActivity::class.java))
+        }
         binding.btnSave.setOnClickListener { save() }
     }
 

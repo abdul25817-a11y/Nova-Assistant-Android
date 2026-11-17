@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="nova_primary">#8B7CF6</color>
+    <color name="nova_primary_dark">#4834D4</color>
+    <color name="nova_primary_light">#6C5CE7</color>
+    <color name="nova_accent">#00CEC9</color>
+    <color name="nova_bg">#0F1020</color>
+    <color name="nova_surface">#1A1B2E</color>
+    <color name="nova_surface_alt">#23243A</color>
+    <color name="nova_on_surface">#FFFFFF</color>
+    <color name="nova_muted">#9A9CB8</color>
+
+    <color name="nova_on_bubble_user">#FFFFFF</color>
+    <color name="nova_bubble_user_start">#6C5CE7</color>
+    <color name="nova_bubble_user_end">#4834D4</color>
+    <color name="nova_bubble_assistant">#23243A</color>
+    <color name="nova_header_start">#5B4BD6</color>
+    <color name="nova_header_end">#2A1C82</color>
+    <color name="nova_divider">#2C2D45</color>
+    <color name="nova_card_stroke">#2E3049</color>
+    <color name="nova_scrim">#000000</color>
+
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+</resources>

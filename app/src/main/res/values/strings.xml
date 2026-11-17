@@ -47,4 +47,34 @@
     <string name="voice_stopped">Voice assistant stopped</string>
     <string name="voice_permission_needed">Microphone and notification permissions are needed for voice mode</string>
     <string name="accessibility_hint">Enable Nova Voice Control in Accessibility settings to allow voice actions.</string>
+
+    <string name="empty_chat_title">What is on your mind?</string>
+    <string name="empty_chat_subtitle">Ask Nova anything, or tap the mic to speak.</string>
+    <string name="avatar_letter">N</string>
+
+    <string name="home_greeting">Welcome back</string>
+    <string name="home_subtitle">Your private AI companion</string>
+    <string name="home_quick_actions">Quick actions</string>
+    <string name="home_chat">Chat</string>
+    <string name="home_chat_desc">Ask anything in Urdu or English</string>
+    <string name="home_voice">Voice mode</string>
+    <string name="home_voice_desc">Hands-free conversation</string>
+    <string name="home_settings_desc">Provider, model and wake word</string>
+
+    <string name="section_ai">AI provider</string>
+    <string name="section_voice">Voice</string>
+    <string name="choose_model">Choose a preset</string>
+
+    <string name="model_picker_title">Choose a model</string>
+    <string name="model_picker_note">Presets fill in the endpoint and model name. You still supply your own key. Nothing is bundled.</string>
+    <string name="model_preset_local">On-device (offline)</string>
+    <string name="model_preset_local_desc">Uses the built-in offline brain. No key or internet needed.</string>
+    <string name="model_preset_openai">OpenAI</string>
+    <string name="model_preset_openai_desc">Official API endpoint. Requires your own API key.</string>
+    <string name="model_preset_openrouter">OpenRouter</string>
+    <string name="model_preset_openrouter_desc">OpenAI-compatible gateway. Requires your own API key.</string>
+    <string name="model_preset_groq">Groq</string>
+    <string name="model_preset_groq_desc">Fast OpenAI-compatible endpoint. Requires your own API key.</string>
+    <string name="model_preset_gemini">Gemini</string>
+    <string name="model_preset_gemini_desc">Google OpenAI-compatible endpoint. Requires your own API key.</string>
 </resources>

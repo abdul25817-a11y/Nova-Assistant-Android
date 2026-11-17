@@ -1,102 +1,161 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/nova_bg"
-    android:fillViewport="true">
+    android:fillViewport="true"
+    android:fitsSystemWindows="true">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="20dp">
+        android:padding="@dimen/space_lg">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/settings_title"
-            android:textColor="@color/white"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            android:paddingBottom="20dp" />
+            style="@style/TextAppearance.Nova.Headline" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/settings_api_key"
-            android:textColor="@color/nova_accent"
-            android:paddingBottom="4dp" />
-
-        <EditText
-            android:id="@+id/apiKey"
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_input"
-            android:hint="@string/settings_api_key_hint"
-            android:inputType="textPassword"
-            android:textColor="@color/white"
-            android:textColorHint="@color/nova_muted"
-            android:padding="14dp" />
+            android:layout_marginTop="@dimen/space_lg"
+            app:cardBackgroundColor="@color/nova_surface"
+            app:cardCornerRadius="@dimen/radius_md"
+            app:cardElevation="2dp"
+            app:strokeColor="@color/nova_card_stroke"
+            app:strokeWidth="1dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/settings_base_url"
-            android:textColor="@color/nova_accent"
-            android:paddingTop="16dp"
-            android:paddingBottom="4dp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/space_lg">
 
-        <EditText
-            android:id="@+id/baseUrl"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/section_ai"
+                    style="@style/TextAppearance.Nova.Title" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/space_md"
+                    android:text="@string/settings_api_key"
+                    android:textColor="@color/nova_accent"
+                    android:textSize="@dimen/text_body" />
+
+                <EditText
+                    android:id="@+id/apiKey"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/space_sm"
+                    android:background="@drawable/bg_input"
+                    android:hint="@string/settings_api_key_hint"
+                    android:inputType="textPassword"
+                    android:padding="@dimen/space_md"
+                    android:textColor="@color/nova_on_surface"
+                    android:textColorHint="@color/nova_muted" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/space_md"
+                    android:text="@string/settings_base_url"
+                    android:textColor="@color/nova_accent"
+                    android:textSize="@dimen/text_body" />
+
+                <EditText
+                    android:id="@+id/baseUrl"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/space_sm"
+                    android:background="@drawable/bg_input"
+                    android:hint="@string/settings_base_url_hint"
+                    android:inputType="textUri"
+                    android:padding="@dimen/space_md"
+                    android:textColor="@color/nova_on_surface"
+                    android:textColorHint="@color/nova_muted" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/space_md"
+                    android:text="@string/settings_model"
+                    android:textColor="@color/nova_accent"
+                    android:textSize="@dimen/text_body" />
+
+                <EditText
+                    android:id="@+id/model"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/space_sm"
+                    android:background="@drawable/bg_input"
+                    android:hint="@string/settings_model_hint"
+                    android:inputType="text"
+                    android:padding="@dimen/space_md"
+                    android:textColor="@color/nova_on_surface"
+                    android:textColorHint="@color/nova_muted" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnPickModel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/space_md"
+                    android:text="@string/choose_model"
+                    app:icon="@drawable/ic_model"
+                    style="@style/Widget.Material3.Button.OutlinedButton" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/space_md"
+                    android:text="@string/settings_offline_note"
+                    style="@style/TextAppearance.Nova.Caption" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_input"
-            android:hint="@string/settings_base_url_hint"
-            android:inputType="textUri"
-            android:textColor="@color/white"
-            android:textColorHint="@color/nova_muted"
-            android:padding="14dp" />
+            android:layout_marginTop="@dimen/space_md"
+            app:cardBackgroundColor="@color/nova_surface"
+            app:cardCornerRadius="@dimen/radius_md"
+            app:cardElevation="2dp"
+            app:strokeColor="@color/nova_card_stroke"
+            app:strokeWidth="1dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/settings_model"
-            android:textColor="@color/nova_accent"
-            android:paddingTop="16dp"
-            android:paddingBottom="4dp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/space_lg">
 
-        <EditText
-            android:id="@+id/model"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/bg_input"
-            android:hint="@string/settings_model_hint"
-            android:inputType="text"
-            android:textColor="@color/white"
-            android:textColorHint="@color/nova_muted"
-            android:padding="14dp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/section_voice"
+                    style="@style/TextAppearance.Nova.Title" />
 
-        <com.google.android.material.materialswitch.MaterialSwitch
-            android:id="@+id/switchWake"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="@string/settings_enable_wake"
-            android:textColor="@color/white" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="@string/settings_offline_note"
-            android:textColor="@color/nova_muted"
-            android:textSize="13sp" />
+                <com.google.android.material.materialswitch.MaterialSwitch
+                    android:id="@+id/switchWake"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/space_md"
+                    android:text="@string/settings_enable_wake"
+                    android:textColor="@color/nova_on_surface" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnSave"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="@dimen/space_lg"
             android:backgroundTint="@color/nova_primary"
             android:text="@string/settings_save" />
     </LinearLayout>

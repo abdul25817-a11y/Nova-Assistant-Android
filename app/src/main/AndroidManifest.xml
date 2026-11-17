@@ -24,9 +24,9 @@
         android:theme="@style/Theme.Nova">
 
         <activity
-            android:name=".ui.MainActivity"
+            android:name=".ui.HomeActivity"
             android:exported="true"
-            android:launchMode="singleTop">
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -34,9 +34,21 @@
         </activity>
 
         <activity
+            android:name=".ui.MainActivity"
+            android:exported="false"
+            android:launchMode="singleTop"
+            android:parentActivityName=".ui.HomeActivity" />
+
+        <activity
             android:name=".ui.SettingsActivity"
             android:exported="false"
             android:label="@string/settings_title" />
+
+        <activity
+            android:name=".ui.ModelPickerActivity"
+            android:exported="false"
+            android:label="@string/model_picker_title"
+            android:parentActivityName=".ui.SettingsActivity" />
 
         <service
             android:name=".voice.VoiceAssistantService"

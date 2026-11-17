@@ -2,16 +2,46 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="6dp">
+    android:orientation="horizontal"
+    android:paddingStart="@dimen/space_sm"
+    android:paddingEnd="@dimen/space_xl"
+    android:paddingTop="@dimen/space_sm"
+    android:paddingBottom="@dimen/space_sm">
 
     <TextView
-        android:id="@+id/bubble"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="start"
-        android:background="@drawable/bg_bubble_assistant"
-        android:padding="12dp"
+        android:id="@+id/avatar"
+        android:layout_width="@dimen/avatar_size"
+        android:layout_height="@dimen/avatar_size"
+        android:layout_marginEnd="@dimen/space_sm"
+        android:background="@drawable/bg_circle_primary"
+        android:gravity="center"
+        android:text="@string/avatar_letter"
         android:textColor="@color/white"
-        android:textSize="16sp" />
+        android:textStyle="bold"
+        android:textSize="@dimen/text_body" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/bubble"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_bubble_assistant"
+            android:padding="@dimen/space_md"
+            android:textColor="@color/nova_on_surface"
+            android:textSize="@dimen/text_message" />
+
+        <TextView
+            android:id="@+id/time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_xs"
+            android:layout_marginStart="@dimen/space_sm"
+            android:textColor="@color/nova_muted"
+            android:textSize="@dimen/text_caption" />
+    </LinearLayout>
 </LinearLayout>

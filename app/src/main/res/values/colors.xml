@@ -2,11 +2,24 @@
 <resources>
     <color name="nova_primary">#6C5CE7</color>
     <color name="nova_primary_dark">#4834D4</color>
-    <color name="nova_accent">#00CEC9</color>
-    <color name="nova_bg">#0F1020</color>
-    <color name="nova_surface">#1A1B2E</color>
-    <color name="nova_on_surface">#FFFFFF</color>
-    <color name="nova_muted">#8A8BA3</color>
+    <color name="nova_primary_light">#A29BFE</color>
+    <color name="nova_accent">#00B8B2</color>
+    <color name="nova_bg">#F4F5FB</color>
+    <color name="nova_surface">#FFFFFF</color>
+    <color name="nova_surface_alt">#ECEEF7</color>
+    <color name="nova_on_surface">#1A1B2E</color>
+    <color name="nova_muted">#6C6E8A</color>
+
+    <color name="nova_on_bubble_user">#FFFFFF</color>
+    <color name="nova_bubble_user_start">#6C5CE7</color>
+    <color name="nova_bubble_user_end">#4834D4</color>
+    <color name="nova_bubble_assistant">#FFFFFF</color>
+    <color name="nova_header_start">#6C5CE7</color>
+    <color name="nova_header_end">#3B2AA8</color>
+    <color name="nova_divider">#DDE0EA</color>
+    <color name="nova_card_stroke">#E2E4F0</color>
+    <color name="nova_scrim">#1A1A2E</color>
+
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
 </resources>

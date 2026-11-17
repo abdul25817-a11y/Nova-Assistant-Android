@@ -1,5 +1,6 @@
 package com.nova.assistant.ui
 
+import android.text.format.DateFormat
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -8,6 +9,7 @@ import com.nova.assistant.data.ChatMessage
 import com.nova.assistant.data.Role
 import com.nova.assistant.databinding.ItemMessageAssistantBinding
 import com.nova.assistant.databinding.ItemMessageUserBinding
+import java.util.Date
 
 class MessageAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -41,10 +43,19 @@ class MessageAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val message = items[position]
         when (holder) {
-            is UserHolder -> holder.binding.bubble.text = message.content
-            is AssistantHolder -> holder.binding.bubble.text = message.content
+            is UserHolder -> {
+                holder.binding.bubble.text = message.content
+                holder.binding.time.text = formatTime(holder, message)
+            }
+            is AssistantHolder -> {
+                holder.binding.bubble.text = message.content
+                holder.binding.time.text = formatTime(holder, message)
+            }
         }
     }
+
+    private fun formatTime(holder: RecyclerView.ViewHolder, message: ChatMessage): String =
+        DateFormat.getTimeFormat(holder.itemView.context).format(Date(message.id))
 
     private class UserHolder(val binding: ItemMessageUserBinding) : RecyclerView.ViewHolder(binding.root)
     private class AssistantHolder(val binding: ItemMessageAssistantBinding) : RecyclerView.ViewHolder(binding.root)
