@@ -16,6 +16,8 @@
         <item name="android:windowAnimationStyle">@style/Animation.Nova</item>
     </style>
 
+    <style name="Animation" parent="@android:style/Animation" />
+
     <style name="Animation.Nova">
         <item name="android:activityOpenEnterAnimation">@anim/nova_slide_in_right</item>
         <item name="android:activityOpenExitAnimation">@anim/nova_fade_out</item>
