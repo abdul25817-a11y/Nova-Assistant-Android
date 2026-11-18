@@ -12,6 +12,11 @@
         android:title="@string/action_clear"
         app:showAsAction="never" />
     <item
+        android:id="@+id/action_stop_speech"
+        android:icon="@drawable/ic_delete"
+        android:title="@string/action_stop_speech"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/action_settings"
         android:icon="@drawable/ic_settings"
         android:title="@string/action_settings"

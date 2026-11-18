@@ -22,14 +22,27 @@ class NovaAccessibilityService : AccessibilityService() {
 
     override fun onInterrupt() {}
 
-    fun goHome(): Boolean = performGlobalAction(GLOBAL_ACTION_HOME)
+    fun goHome(): Boolean = safeGlobalAction(GLOBAL_ACTION_HOME)
 
-    fun goBack(): Boolean = performGlobalAction(GLOBAL_ACTION_BACK)
+    fun goBack(): Boolean = safeGlobalAction(GLOBAL_ACTION_BACK)
 
-    fun showRecents(): Boolean = performGlobalAction(GLOBAL_ACTION_RECENTS)
+    fun showRecents(): Boolean = safeGlobalAction(GLOBAL_ACTION_RECENTS)
 
-    fun click(node: AccessibilityNodeInfo?): Boolean =
+    fun showNotifications(): Boolean = safeGlobalAction(GLOBAL_ACTION_NOTIFICATIONS)
+
+    fun showQuickSettings(): Boolean = safeGlobalAction(GLOBAL_ACTION_QUICK_SETTINGS)
+
+    fun click(node: AccessibilityNodeInfo?): Boolean = try {
         node?.performAction(AccessibilityNodeInfo.ACTION_CLICK) == true
+    } catch (e: Exception) {
+        false
+    }
+
+    private fun safeGlobalAction(action: Int): Boolean = try {
+        performGlobalAction(action)
+    } catch (e: Exception) {
+        false
+    }
 
     override fun onDestroy() {
         instance = null

@@ -1,235 +1,262 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/nova_bg"
-    android:fillViewport="true"
     android:fitsSystemWindows="true">
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingBottom="@dimen/space_xl">
+        android:layout_height="match_parent"
+        android:background="@color/nova_scrim">
 
-        <LinearLayout
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@drawable/bg_gradient_header"
-            android:padding="@dimen/space_xl">
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:fillViewport="true">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/home_greeting"
-                android:textColor="@color/white"
-                android:textSize="@dimen/text_headline"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/space_xs"
-                android:text="@string/home_subtitle"
-                android:textColor="@color/white"
-                android:textSize="@dimen/text_body" />
-        </LinearLayout>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/space_lg"
-            android:layout_marginTop="@dimen/space_xl"
-            android:layout_marginBottom="@dimen/space_md"
-            android:text="@string/home_quick_actions"
-            style="@style/TextAppearance.Nova.Title" />
-
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/cardChat"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/space_lg"
-            android:layout_marginEnd="@dimen/space_lg"
-            android:layout_marginBottom="@dimen/space_md"
-            android:clickable="true"
-            android:focusable="true"
-            app:cardBackgroundColor="@color/nova_surface"
-            app:cardCornerRadius="@dimen/radius_md"
-            app:cardElevation="2dp"
-            app:strokeColor="@color/nova_card_stroke"
-            app:strokeWidth="1dp">
-
-            <LinearLayout
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:padding="@dimen/space_lg">
+                android:layout_height="match_parent"
+                android:gravity="center">
 
-                <ImageView
-                    android:layout_width="@dimen/action_size"
-                    android:layout_height="@dimen/action_size"
-                    android:background="@drawable/bg_circle_primary"
-                    android:padding="@dimen/space_md"
-                    android:src="@drawable/ic_chat"
-                    android:contentDescription="@null" />
-
-                <LinearLayout
-                    android:layout_width="0dp"
+                <FrameLayout
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginStart="@dimen/space_lg"
-                    android:orientation="vertical">
+                    android:layout_gravity="center">
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <ImageView
+                        android:id="@+id/homeVisual"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/home_chat"
-                        style="@style/TextAppearance.Nova.Body"
-                        android:textStyle="bold" />
+                        android:adjustViewBounds="true"
+                        android:contentDescription="@string/home_visual_desc"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/home_visual" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/home_chat_desc"
-                        style="@style/TextAppearance.Nova.Caption" />
-                </LinearLayout>
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
 
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/ic_arrow_forward"
-                    android:contentDescription="@null" />
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
+                        <androidx.constraintlayout.widget.Guideline
+                            android:id="@+id/guideEdgeStart"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            app:layout_constraintGuide_percent="0.035" />
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/cardVoice"
+                        <androidx.constraintlayout.widget.Guideline
+                            android:id="@+id/guideEdgeEnd"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            app:layout_constraintGuide_percent="0.965" />
+
+                        <androidx.constraintlayout.widget.Guideline
+                            android:id="@+id/guideMenuStart"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            app:layout_constraintGuide_percent="0.615" />
+
+                        <androidx.constraintlayout.widget.Guideline
+                            android:id="@+id/guideMenuEnd"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            app:layout_constraintGuide_percent="0.975" />
+
+                        <androidx.constraintlayout.widget.Guideline
+                            android:id="@+id/guideMenuTop"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            app:layout_constraintGuide_percent="0.405" />
+
+                        <androidx.constraintlayout.widget.Guideline
+                            android:id="@+id/guideMenuBottom"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            app:layout_constraintGuide_percent="0.625" />
+
+                        <androidx.constraintlayout.widget.Guideline
+                            android:id="@+id/guideStatusTop"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            app:layout_constraintGuide_percent="0.645" />
+
+                        <androidx.constraintlayout.widget.Guideline
+                            android:id="@+id/guideSpeakTop"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            app:layout_constraintGuide_percent="0.71" />
+
+                        <androidx.constraintlayout.widget.Guideline
+                            android:id="@+id/guideSpeakBottom"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            app:layout_constraintGuide_percent="0.85" />
+
+                        <androidx.constraintlayout.widget.Guideline
+                            android:id="@+id/guideStopBottom"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            app:layout_constraintGuide_percent="0.885" />
+
+                        <com.google.android.material.appbar.MaterialToolbar
+                            android:id="@+id/toolbar"
+                            android:layout_width="0dp"
+                            android:layout_height="64dp"
+                            android:background="@android:color/transparent"
+                            android:layoutDirection="rtl"
+                            android:paddingStart="@dimen/space_sm"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:navigationIcon="@drawable/ic_menu"
+                            app:navigationIconTint="@color/white" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:orientation="vertical"
+                            app:layout_constraintBottom_toTopOf="@id/guideMenuBottom"
+                            app:layout_constraintEnd_toStartOf="@id/guideMenuEnd"
+                            app:layout_constraintStart_toEndOf="@id/guideMenuStart"
+                            app:layout_constraintTop_toTopOf="@id/guideMenuTop">
+
+                            <View
+                                android:id="@+id/cardChat"
+                                android:layout_width="match_parent"
+                                android:layout_height="0dp"
+                                android:layout_weight="1"
+                                android:clickable="true"
+                                android:contentDescription="@string/home_chat"
+                                android:focusable="true" />
+
+                            <View
+                                android:id="@+id/cardVoice"
+                                android:layout_width="match_parent"
+                                android:layout_height="0dp"
+                                android:layout_weight="1"
+                                android:clickable="true"
+                                android:contentDescription="@string/home_voice"
+                                android:focusable="true" />
+
+                            <View
+                                android:id="@+id/cardSettings"
+                                android:layout_width="match_parent"
+                                android:layout_height="0dp"
+                                android:layout_weight="1"
+                                android:clickable="true"
+                                android:contentDescription="@string/action_settings"
+                                android:focusable="true" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:background="@drawable/bg_hero_scrim"
+                            android:gravity="center_vertical"
+                            android:orientation="vertical"
+                            android:paddingHorizontal="@dimen/space_md"
+                            app:layout_constraintBottom_toTopOf="@id/guideSpeakTop"
+                            app:layout_constraintEnd_toStartOf="@id/guideEdgeEnd"
+                            app:layout_constraintStart_toEndOf="@id/guideEdgeStart"
+                            app:layout_constraintTop_toTopOf="@id/guideStatusTop">
+
+                            <TextView
+                                android:id="@+id/statusText"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:ellipsize="end"
+                                android:maxLines="1"
+                                android:text="@string/voice_status_idle"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/text_caption"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/recognizedText"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:ellipsize="end"
+                                android:maxLines="1"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/text_caption" />
+
+                            <TextView
+                                android:id="@+id/replyText"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:ellipsize="end"
+                                android:maxLines="1"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/text_caption" />
+                        </LinearLayout>
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnSpeak"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:insetBottom="0dp"
+                            android:insetTop="0dp"
+                            android:text="@string/tap_to_speak"
+                            android:textColor="@android:color/transparent"
+                            app:backgroundTint="@android:color/transparent"
+                            app:elevation="0dp"
+                            app:layout_constraintBottom_toTopOf="@id/guideSpeakBottom"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="@id/guideSpeakTop"
+                            app:layout_constraintWidth_default="percent"
+                            app:layout_constraintWidth_percent="0.94"
+                            app:strokeWidth="0dp" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnStop"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:enabled="false"
+                            android:insetBottom="0dp"
+                            android:insetTop="0dp"
+                            android:text="@string/stop"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/text_caption"
+                            app:backgroundTint="#99000A1F"
+                            app:cornerRadius="@dimen/radius_pill"
+                            app:elevation="0dp"
+                            app:layout_constraintBottom_toTopOf="@id/guideStopBottom"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="@id/guideSpeakBottom"
+                            app:layout_constraintWidth_default="percent"
+                            app:layout_constraintWidth_percent="0.3"
+                            app:strokeWidth="0dp" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </FrameLayout>
+            </FrameLayout>
+        </ScrollView>
+
+        <com.nova.assistant.ui.RgbBorderView
+            android:id="@+id/rgbBorder"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/space_lg"
-            android:layout_marginEnd="@dimen/space_lg"
-            android:layout_marginBottom="@dimen/space_md"
-            android:clickable="true"
-            android:focusable="true"
-            app:cardBackgroundColor="@color/nova_surface"
-            app:cardCornerRadius="@dimen/radius_md"
-            app:cardElevation="2dp"
-            app:strokeColor="@color/nova_card_stroke"
-            app:strokeWidth="1dp">
+            android:layout_height="match_parent"
+            android:clickable="false"
+            android:focusable="false" />
+    </FrameLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:padding="@dimen/space_lg">
-
-                <ImageView
-                    android:layout_width="@dimen/action_size"
-                    android:layout_height="@dimen/action_size"
-                    android:background="@drawable/bg_circle_accent"
-                    android:padding="@dimen/space_md"
-                    android:src="@drawable/ic_mic"
-                    android:contentDescription="@null" />
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginStart="@dimen/space_lg"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/home_voice"
-                        style="@style/TextAppearance.Nova.Body"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/home_voice_desc"
-                        style="@style/TextAppearance.Nova.Caption" />
-                </LinearLayout>
-
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/ic_arrow_forward"
-                    android:contentDescription="@null" />
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
-
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/cardSettings"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/space_lg"
-            android:layout_marginEnd="@dimen/space_lg"
-            android:clickable="true"
-            android:focusable="true"
-            app:cardBackgroundColor="@color/nova_surface"
-            app:cardCornerRadius="@dimen/radius_md"
-            app:cardElevation="2dp"
-            app:strokeColor="@color/nova_card_stroke"
-            app:strokeWidth="1dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:padding="@dimen/space_lg">
-
-                <ImageView
-                    android:layout_width="@dimen/action_size"
-                    android:layout_height="@dimen/action_size"
-                    android:background="@drawable/bg_circle_primary"
-                    android:padding="@dimen/space_md"
-                    android:src="@drawable/ic_settings"
-                    android:contentDescription="@null" />
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginStart="@dimen/space_lg"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/action_settings"
-                        style="@style/TextAppearance.Nova.Body"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/home_settings_desc"
-                        style="@style/TextAppearance.Nova.Caption" />
-                </LinearLayout>
-
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/ic_arrow_forward"
-                    android:contentDescription="@null" />
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/space_xl"
-            android:paddingStart="@dimen/space_lg"
-            android:paddingEnd="@dimen/space_lg"
-            android:gravity="center"
-            android:text="@string/settings_offline_note"
-            style="@style/TextAppearance.Nova.Caption" />
-    </LinearLayout>
-</ScrollView>
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/navView"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        app:menu="@menu/menu_home_drawer" />
+</androidx.drawerlayout.widget.DrawerLayout>

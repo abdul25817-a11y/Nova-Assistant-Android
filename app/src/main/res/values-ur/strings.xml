@@ -77,4 +77,36 @@
     <string name="model_preset_groq_desc">تیز OpenAI ہم آہنگ پتہ۔ آپ کی اپنی کلید درکار ہے۔</string>
     <string name="model_preset_gemini">Gemini</string>
     <string name="model_preset_gemini_desc">Google کا OpenAI ہم آہنگ پتہ۔ آپ کی اپنی کلید درکار ہے۔</string>
+
+    <string name="command_opening">%1$s کھول رہا ہوں</string>
+    <string name="command_not_installed">یہ ڈیوائس پر %1$s انسٹال نہیں ہے۔</string>
+    <string name="command_failed">%1$s نہیں کھل سکا۔</string>
+
+    <string name="section_automation">وائس کنٹرول</string>
+    <string name="accessibility_title">نووا وائس کنٹرول چالو کریں</string>
+    <string name="accessibility_guide">نووا کو آپ کی طرف سے ٹیپ، اسکرول اور ٹائپ کرنے دینے کے لیے اس کی رسائی سروس چالو کریں۔ طریقہ: اینڈرائیڈ کی رسائی (Accessibility) ترتیبات کھولیں، \"نووا وائس کنٹرول\" تلاش کریں، اسے چالو کریں اور انتباہی ڈائیلاگ کی تصدیق کریں۔ آپ اسے کبھی بھی بند کر سکتے ہیں۔</string>
+    <string name="accessibility_open_settings">رسائی کی ترتیبات کھولیں</string>
+    <string name="accessibility_enabled">نووا وائس کنٹرول پہلے ہی چالو ہے۔</string>
+    <string name="accessibility_open_failed">رسائی کی ترتیبات نہیں کھل سکیں۔</string>
+
+    <string name="tap_to_speak">بولنے کے لیے ٹیپ کریں</string>
+    <string name="home_visual_desc">نووا ہوم تصویر</string>
+    <string name="voice_status_idle">نووا سے بات کرنے کے لیے ٹیپ کریں</string>
+    <string name="processing">پروسیسنگ…</string>
+    <string name="voice_recognized">آپ نے کہا: %1$s</string>
+    <string name="voice_partial">سن رہا ہوں: %1$s</string>
+    <string name="voice_reply">نووا: %1$s</string>
+    <string name="voice_cancelled">سننا منسوخ ہو گیا</string>
+    <string name="voice_empty">کوئی آواز نہیں ملی۔ دوبارہ کوشش کریں۔</string>
+    <string name="voice_unclear">سمجھ نہیں آیا۔ براہِ کرم دوبارہ کوشش کریں۔</string>
+    <string name="voice_network_error">نیٹ ورک کا مسئلہ ہے۔ کنکشن چیک کر کے دوبارہ کوشش کریں۔</string>
+    <string name="voice_busy">وائس ریکگنائزر مصروف ہے۔ دوبارہ کوشش کریں۔</string>
+    <string name="voice_audio_error">مائیکروفون کا مسئلہ ہے۔ دوبارہ کوشش کریں۔</string>
+    <string name="voice_server_error">اسپیچ سروس میں خرابی ہے۔ دوبارہ کوشش کریں۔</string>
+    <string name="voice_permission_denied">آواز کے لیے مائیکروفون کی اجازت درکار ہے۔ ترتیبات میں اسے چالو کریں۔</string>
+    <string name="stop">روکیں</string>
+    <string name="speech_output_error">نووا جواب نہیں بول سکا۔ متن اسکرین پر دکھایا گیا ہے۔</string>
+    <string name="action_stop_speech">تقریر روکیں</string>
+    <string name="nav_open">نیویگیشن مینو کھولیں</string>
+    <string name="nav_close">نیویگیشن مینو بند کریں</string>
 </resources>

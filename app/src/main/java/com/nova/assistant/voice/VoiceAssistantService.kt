@@ -1,5 +1,6 @@
 package com.nova.assistant.voice
 
+import android.app.ActivityManager
 import android.app.Notification
 import android.app.PendingIntent
 import android.app.Service
@@ -12,13 +13,13 @@ import android.os.Bundle
 import android.speech.RecognitionListener
 import android.speech.RecognizerIntent
 import android.speech.SpeechRecognizer
-import android.speech.tts.TextToSpeech
 import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import androidx.core.app.ServiceCompat
 import com.nova.assistant.NovaApp
 import com.nova.assistant.R
+import com.nova.assistant.automation.ActionRouter
 import com.nova.assistant.ai.AiClient
 import com.nova.assistant.ai.LocalBrain
 import com.nova.assistant.ai.AiReply
@@ -41,10 +42,12 @@ class VoiceAssistantService : Service() {
 
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
     private val ai = AiClient()
+    private lateinit var actionRouter: ActionRouter
     private var recognizer: SpeechRecognizer? = null
-    private var tts: TextToSpeech? = null
     private var listening = false
     private var stopped = false
+    private var localeAttempt = 0
+    private val locales = RecognitionLanguagePolicy.plan(Locale.getDefault()).all
 
     @Volatile
     private var wakeEnabled = true
@@ -61,17 +64,16 @@ class VoiceAssistantService : Service() {
     override fun onCreate() {
         super.onCreate()
         stopped = false
+        actionRouter = ActionRouter(this)
         loadSettings()
-        tts = TextToSpeech(this) { status ->
-            if (status == TextToSpeech.SUCCESS) {
-                val lang = if (Locale.getDefault().language.lowercase(Locale.ROOT) == "ur") {
-                    Locale("ur", "PK")
-                } else {
-                    Locale.US
-                }
-                if (tts?.setLanguage(lang) == TextToSpeech.LANG_MISSING_DATA) {
-                    tts?.setLanguage(Locale.US)
-                }
+        Speaker.init(this)
+        scope.launch {
+            Speaker.errors.collect {
+                Toast.makeText(
+                    this@VoiceAssistantService,
+                    R.string.speech_output_error,
+                    Toast.LENGTH_LONG
+                ).show()
             }
         }
         startAsForeground()
@@ -158,15 +160,30 @@ class VoiceAssistantService : Service() {
 
             override fun onError(error: Int) {
                 listening = false
-                scheduleRestart()
+                val failure = SpeechErrorMapper.map(error)
+                if (SpeechErrorMapper.shouldRetryWithAnotherLocale(failure) &&
+                    localeAttempt < locales.lastIndex
+                ) {
+                    localeAttempt++
+                    scope.launch {
+                        delay(400)
+                        startListening()
+                    }
+                } else {
+                    scheduleRestart()
+                }
             }
 
             override fun onResults(results: Bundle?) {
                 listening = false
-                val text = results?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
-                    ?.firstOrNull().orEmpty()
-                if (text.isNotBlank()) onSpeech(text)
-                else scheduleRestart()
+                val matches = results?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
+                val text = VoiceInputFilter.best(matches)
+                if (text == null) {
+                    scheduleRestart()
+                } else {
+                    localeAttempt = 0
+                    onSpeech(text)
+                }
             }
 
             override fun onPartialResults(partialResults: Bundle?) {}
@@ -175,12 +192,10 @@ class VoiceAssistantService : Service() {
 
         val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
             putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
-            putExtra(
-                RecognizerIntent.EXTRA_LANGUAGE,
-                if (Locale.getDefault().language.lowercase(Locale.ROOT) == "ur") "ur-PK" else "en-US"
-            )
-            putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 1)
-            putExtra(RecognizerIntent.EXTRA_PREFER_OFFLINE, true)
+            putExtra(RecognizerIntent.EXTRA_LANGUAGE, locales[localeAttempt])
+            putExtra(RecognizerIntent.EXTRA_LANGUAGE_PREFERENCE, locales[localeAttempt])
+            putExtra(RecognizerIntent.EXTRA_PROMPT, getString(R.string.listening))
+            putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 3)
         }
         try {
             recognizer?.startListening(intent)
@@ -201,13 +216,20 @@ class VoiceAssistantService : Service() {
 
     private fun process(text: String) {
         scope.launch {
+            val command = VoiceCommandParser.parse(text)
+            if (command != null) {
+                handleCommand(command, text)
+                scheduleRestart()
+                return@launch
+            }
             val settings = NovaSettings(apiKey, baseUrl, model, wakeEnabled)
             val reply = try {
                 ai.respond(text, listOf(ChatMessage(Role.USER, text)), settings)
             } catch (e: Exception) {
                 AiReply(LocalBrain.reply(text), online = false)
             }
-            speak(reply.text)
+            Speaker.init(applicationContext)
+            Speaker.speak(reply.text, Speaker.SOURCE_VOICE)
             withContext(Dispatchers.IO) {
                 val store = ConversationStore(applicationContext)
                 store.add(ChatMessage(Role.USER, text))
@@ -217,18 +239,34 @@ class VoiceAssistantService : Service() {
         }
     }
 
-    private fun speak(text: String) {
-        try {
-            tts?.speak(text, TextToSpeech.QUEUE_FLUSH, null, "nova_${System.currentTimeMillis()}")
-        } catch (e: Exception) {
-            // Ignore TTS failures; the reply is still stored in chat.
+    private suspend fun handleCommand(command: VoiceCommand, original: String) {
+        val feedback = when (val result = actionRouter.execute(command)) {
+            is ActionRouter.Result.Launched ->
+                getString(R.string.command_opening, result.target.displayName)
+            is ActionRouter.Result.NotInstalled ->
+                getString(R.string.command_not_installed, result.target.displayName)
+            is ActionRouter.Result.Failed ->
+                getString(R.string.command_failed, result.target.displayName)
+            ActionRouter.Result.NoAction -> return
+        }
+        Speaker.init(applicationContext)
+        Speaker.speak(feedback, Speaker.SOURCE_VOICE)
+        withContext(Dispatchers.IO) {
+            val store = ConversationStore(applicationContext)
+            store.add(ChatMessage(Role.USER, original))
+            store.add(ChatMessage(Role.ASSISTANT, feedback))
         }
     }
 
     private fun scheduleRestart() {
         if (stopped) return
         scope.launch {
-            delay(1200)
+            var attempts = 0
+            while (Speaker.isSpeaking() && !stopped && attempts < 120) {
+                delay(250)
+                attempts++
+            }
+            delay(600)
             startListening()
         }
     }
@@ -236,14 +274,9 @@ class VoiceAssistantService : Service() {
     override fun onDestroy() {
         stopped = true
         listening = false
+        Speaker.stop(Speaker.SOURCE_VOICE)
         recognizer?.destroy()
         recognizer = null
-        try {
-            tts?.stop()
-            tts?.shutdown()
-        } catch (e: Exception) {
-        }
-        tts = null
         scope.cancel()
         super.onDestroy()
     }
@@ -261,6 +294,18 @@ class VoiceAssistantService : Service() {
             val intent = Intent(context, VoiceAssistantService::class.java).setAction(ACTION_STOP)
             val flags = PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
             PendingIntent.getService(context, 3, intent, flags).send()
+        }
+
+        fun isRunning(context: Context): Boolean {
+            val manager = context.getSystemService(Context.ACTIVITY_SERVICE) as? ActivityManager
+                ?: return false
+            return manager.getRunningServices(Int.MAX_VALUE).any { service ->
+                service.service.className == VoiceAssistantService::class.java.name
+            }
+        }
+
+        fun stopIfRunning(context: Context) {
+            if (isRunning(context)) stop(context)
         }
     }
 }

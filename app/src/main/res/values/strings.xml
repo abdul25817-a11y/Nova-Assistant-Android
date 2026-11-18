@@ -77,4 +77,36 @@
     <string name="model_preset_groq_desc">Fast OpenAI-compatible endpoint. Requires your own API key.</string>
     <string name="model_preset_gemini">Gemini</string>
     <string name="model_preset_gemini_desc">Google OpenAI-compatible endpoint. Requires your own API key.</string>
+
+    <string name="command_opening">Opening %1$s</string>
+    <string name="command_not_installed">%1$s is not installed on this device.</string>
+    <string name="command_failed">Could not open %1$s.</string>
+
+    <string name="section_automation">Voice control</string>
+    <string name="accessibility_title">Enable Nova Voice Control</string>
+    <string name="accessibility_guide">To let Nova tap, scroll and type on your behalf, turn on its accessibility service. Steps: open Android Accessibility settings, find \"Nova Voice Control\", switch it on and confirm the warning dialog. You can turn it off at any time.</string>
+    <string name="accessibility_open_settings">Open Accessibility settings</string>
+    <string name="accessibility_enabled">Nova Voice Control is already enabled.</string>
+    <string name="accessibility_open_failed">Could not open Accessibility settings.</string>
+
+    <string name="tap_to_speak">Tap to Speak</string>
+    <string name="home_visual_desc">Nova home visual</string>
+    <string name="voice_status_idle">Tap to Speak to talk to Nova</string>
+    <string name="processing">Processing…</string>
+    <string name="voice_recognized">You said: %1$s</string>
+    <string name="voice_partial">Listening: %1$s</string>
+    <string name="voice_reply">Nova: %1$s</string>
+    <string name="voice_cancelled">Listening cancelled</string>
+    <string name="voice_empty">No speech detected. Try again.</string>
+    <string name="voice_unclear">Could not understand. Please try again.</string>
+    <string name="voice_network_error">Network problem. Check your connection and try again.</string>
+    <string name="voice_busy">The voice recognizer is busy. Try again.</string>
+    <string name="voice_audio_error">Microphone problem. Try again.</string>
+    <string name="voice_server_error">Speech service error. Try again.</string>
+    <string name="voice_permission_denied">Microphone permission is required. Enable it in Settings to use voice input.</string>
+    <string name="stop">Stop</string>
+    <string name="speech_output_error">Nova could not speak the reply. The text is shown on screen.</string>
+    <string name="action_stop_speech">Stop speech</string>
+    <string name="nav_open">Open navigation menu</string>
+    <string name="nav_close">Close navigation menu</string>
 </resources>

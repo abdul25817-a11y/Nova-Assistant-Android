@@ -4,12 +4,14 @@ import android.app.Application
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.os.Build
+import com.nova.assistant.voice.Speaker
 
 class NovaApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
         instance = this
+        Speaker.init(this)
         createNotificationChannel()
     }
 

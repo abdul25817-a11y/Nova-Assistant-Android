@@ -1,14 +1,10 @@
 package com.nova.assistant.ui
 
 import android.Manifest
-import android.app.ActivityManager
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
-import android.speech.RecognitionListener
-import android.speech.RecognizerIntent
-import android.speech.SpeechRecognizer
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -19,25 +15,40 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.snackbar.Snackbar
 import com.nova.assistant.R
 import com.nova.assistant.databinding.ActivityMainBinding
+import com.nova.assistant.voice.ListeningState
+import com.nova.assistant.voice.Speaker
+import com.nova.assistant.voice.SpeechFailure
+import com.nova.assistant.voice.SpeechInputController
+import com.nova.assistant.voice.TurnResult
 import com.nova.assistant.voice.VoiceAssistantService
+import com.nova.assistant.voice.VoiceTurnHandler
 import kotlinx.coroutines.launch
-import java.util.Locale
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var viewModel: ChatViewModel
     private lateinit var adapter: MessageAdapter
-    private var speechRecognizer: SpeechRecognizer? = null
-    private var listening = false
+    private lateinit var speech: SpeechInputController
+    private lateinit var turns: VoiceTurnHandler
 
     private val settingsLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { }
 
+    private val requestMic =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
+            if (granted) startSpeech() else showMessage(getString(R.string.voice_permission_denied))
+        }
+
     private val requestPermissions =
-        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { }
+        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { result ->
+            if (result.values.any { !it }) {
+                showMessage(getString(R.string.voice_permission_denied))
+            }
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,6 +66,55 @@ class MainActivity : AppCompatActivity() {
             setHasFixedSize(false)
         }
 
+        turns = VoiceTurnHandler(application) { }
+        speech = SpeechInputController(
+            this,
+            hasPermission = {
+                ContextCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.RECORD_AUDIO
+                ) == PackageManager.PERMISSION_GRANTED
+            },
+            onPermissionNeeded = { requestMic.launch(Manifest.permission.RECORD_AUDIO) },
+            listener = object : SpeechInputController.Listener {
+                override fun onState(state: ListeningState) {
+                    when (state) {
+                        ListeningState.IDLE -> {
+                            binding.input.hint = getString(R.string.hint_message)
+                            binding.btnMic.isEnabled = true
+                        }
+                        ListeningState.LISTENING -> {
+                            binding.input.hint = getString(R.string.listening)
+                            binding.btnMic.isEnabled = true
+                        }
+                        ListeningState.PROCESSING -> {
+                            binding.input.hint = getString(R.string.processing)
+                        }
+                        ListeningState.CANCELLED -> {
+                            binding.input.hint = getString(R.string.voice_cancelled)
+                        }
+                    }
+                }
+
+                override fun onPartial(text: String) {
+                    if (text.isNotBlank()) binding.input.hint = getString(R.string.voice_partial, text)
+                }
+
+                override fun onRecognized(text: String) {
+                    binding.input.setText(text)
+                    lifecycleScope.launch {
+                        if (turns.handle(text) == TurnResult.Ignored) {
+                            showMessage(getString(R.string.voice_unclear))
+                        }
+                    }
+                }
+
+                override fun onFailure(failure: SpeechFailure) {
+                    showMessage(failureMessage(failure))
+                }
+            }
+        )
+
         setupToolbar()
         observe()
         requestNeededPermissions()
@@ -65,6 +125,8 @@ class MainActivity : AppCompatActivity() {
             sendCurrentInput()
             true
         }
+
+        observeSpeakerErrors()
 
         if (intent.getBooleanExtra(EXTRA_START_VOICE, false)) {
             toggleVoiceMode()
@@ -79,6 +141,12 @@ class MainActivity : AppCompatActivity() {
             when (item.itemId) {
                 R.id.action_voice -> {
                     toggleVoiceMode()
+                    true
+                }
+                R.id.action_stop_speech -> {
+                    Speaker.stop()
+                    speech.cancel()
+                    showMessage(getString(R.string.voice_cancelled))
                     true
                 }
                 R.id.action_settings -> {
@@ -124,9 +192,19 @@ class MainActivity : AppCompatActivity() {
                             binding.btnSend.isEnabled = true
                             binding.btnMic.isEnabled = true
                             binding.toolbar.subtitle = null
-                            Toast.makeText(this@MainActivity, state.message, Toast.LENGTH_LONG).show()
+                            showMessage(state.message)
                         }
                     }
+                }
+            }
+        }
+    }
+
+    private fun observeSpeakerErrors() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                Speaker.errors.collect {
+                    showMessage(getString(R.string.speech_output_error))
                 }
             }
         }
@@ -136,23 +214,16 @@ class MainActivity : AppCompatActivity() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) !=
             PackageManager.PERMISSION_GRANTED
         ) {
-            requestPermissions.launch(arrayOf(Manifest.permission.RECORD_AUDIO))
-            Toast.makeText(this, R.string.mic_permission_needed, Toast.LENGTH_SHORT).show()
+            requestMic.launch(Manifest.permission.RECORD_AUDIO)
+            showMessage(getString(R.string.mic_permission_needed))
             return
         }
-        if (isVoiceServiceRunning()) {
+        if (VoiceAssistantService.isRunning(this)) {
             VoiceAssistantService.stop(this)
             Toast.makeText(this, R.string.voice_stopped, Toast.LENGTH_SHORT).show()
         } else {
             VoiceAssistantService.start(this)
             Toast.makeText(this, R.string.voice_started, Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    private fun isVoiceServiceRunning(): Boolean {
-        val manager = getSystemService(ACTIVITY_SERVICE) as? ActivityManager ?: return false
-        return manager.getRunningServices(Int.MAX_VALUE).any { service ->
-            service.service.className == VoiceAssistantService::class.java.name
         }
     }
 
@@ -185,79 +256,48 @@ class MainActivity : AppCompatActivity() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) !=
             PackageManager.PERMISSION_GRANTED
         ) {
-            requestPermissions.launch(arrayOf(Manifest.permission.RECORD_AUDIO))
-            Toast.makeText(this, R.string.mic_permission_needed, Toast.LENGTH_SHORT).show()
+            requestMic.launch(Manifest.permission.RECORD_AUDIO)
+            showMessage(getString(R.string.mic_permission_needed))
             return
         }
-        if (!SpeechRecognizer.isRecognitionAvailable(this)) {
-            Toast.makeText(this, R.string.speech_unavailable, Toast.LENGTH_SHORT).show()
-            return
-        }
-        if (listening) {
-            stopListening()
-            return
-        }
-        startListening()
+        startSpeech()
     }
 
-    private fun startListening() {
-        speechRecognizer?.destroy()
-        speechRecognizer = SpeechRecognizer.createSpeechRecognizer(this).apply {
-            setRecognitionListener(object : RecognitionListener {
-                override fun onReadyForSpeech(params: Bundle?) {
-                    listening = true
-                    binding.input.hint = getString(R.string.listening)
-                }
-
-                override fun onBeginningOfSpeech() {}
-                override fun onRmsChanged(rmsdB: Float) {}
-                override fun onBufferReceived(buffer: ByteArray?) {}
-                override fun onEndOfSpeech() { listening = false }
-
-                override fun onError(error: Int) {
-                    listening = false
-                    binding.input.hint = getString(R.string.hint_message)
-                    Toast.makeText(this@MainActivity, R.string.speech_error, Toast.LENGTH_SHORT).show()
-                }
-
-                override fun onResults(results: Bundle?) {
-                    listening = false
-                    binding.input.hint = getString(R.string.hint_message)
-                    val matches = results?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
-                    val text = matches?.firstOrNull().orEmpty()
-                    if (text.isNotBlank()) binding.input.setText(text)
-                }
-
-                override fun onPartialResults(partialResults: Bundle?) {}
-                override fun onEvent(eventType: Int, params: Bundle?) {}
-            })
-        }
-
-        val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
-            putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
-            putExtra(
-                RecognizerIntent.EXTRA_LANGUAGE,
-                if (Locale.getDefault().language.lowercase(Locale.ROOT) == "ur") "ur-PK" else "en-US"
-            )
-            putExtra(RecognizerIntent.EXTRA_PROMPT, getString(R.string.listening))
-            putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 1)
-        }
-        try {
-            speechRecognizer?.startListening(intent)
-        } catch (e: Exception) {
-            Toast.makeText(this, R.string.speech_error, Toast.LENGTH_SHORT).show()
-        }
+    private fun startSpeech() {
+        Speaker.stop()
+        VoiceAssistantService.stopIfRunning(this)
+        speech.start()
     }
 
-    private fun stopListening() {
-        listening = false
-        speechRecognizer?.stopListening()
-        binding.input.hint = getString(R.string.hint_message)
+    private fun failureMessage(failure: SpeechFailure): String = getString(
+        when (failure) {
+            SpeechFailure.NETWORK -> R.string.voice_network_error
+            SpeechFailure.NO_SPEECH -> R.string.voice_empty
+            SpeechFailure.UNCLEAR -> R.string.voice_unclear
+            SpeechFailure.BUSY -> R.string.voice_busy
+            SpeechFailure.PERMISSION -> R.string.voice_permission_denied
+            SpeechFailure.AUDIO -> R.string.voice_audio_error
+            SpeechFailure.SERVER -> R.string.voice_server_error
+            SpeechFailure.UNAVAILABLE -> R.string.speech_unavailable
+            SpeechFailure.CANCELLED -> R.string.voice_cancelled
+            SpeechFailure.UNKNOWN -> R.string.speech_error
+        }
+    )
+
+    private fun showMessage(message: String) {
+        Snackbar.make(binding.root, message, Snackbar.LENGTH_LONG).show()
+    }
+
+    override fun onStop() {
+        speech.cancel()
+        Speaker.stop(Speaker.SOURCE_VOICE)
+        super.onStop()
     }
 
     override fun onDestroy() {
-        speechRecognizer?.destroy()
-        speechRecognizer = null
+        speech.destroy()
+        Speaker.stop(Speaker.SOURCE_CHAT)
+        Speaker.stop(Speaker.SOURCE_VOICE)
         super.onDestroy()
     }
 

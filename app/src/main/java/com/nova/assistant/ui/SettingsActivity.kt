@@ -1,12 +1,14 @@
 package com.nova.assistant.ui
-import com.nova.assistant.R
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import com.nova.assistant.R
+import com.nova.assistant.automation.AccessibilityGuide
 import com.nova.assistant.data.NovaSettings
 import com.nova.assistant.data.SettingsStore
 import com.nova.assistant.databinding.ActivitySettingsBinding
@@ -49,7 +51,27 @@ class SettingsActivity : AppCompatActivity() {
         binding.btnPickModel.setOnClickListener {
             modelPickerLauncher.launch(Intent(this, ModelPickerActivity::class.java))
         }
+        binding.btnAccessibility.setOnClickListener { showAccessibilityGuide() }
         binding.btnSave.setOnClickListener { save() }
+    }
+
+    private fun showAccessibilityGuide() {
+        if (AccessibilityGuide.isEnabled(this)) {
+            Toast.makeText(this, R.string.accessibility_enabled, Toast.LENGTH_SHORT).show()
+            return
+        }
+        AlertDialog.Builder(this)
+            .setTitle(R.string.accessibility_title)
+            .setMessage(R.string.accessibility_guide)
+            .setPositiveButton(R.string.accessibility_open_settings) { _, _ ->
+                try {
+                    startActivity(AccessibilityGuide.settingsIntent())
+                } catch (e: Exception) {
+                    Toast.makeText(this, R.string.accessibility_open_failed, Toast.LENGTH_SHORT).show()
+                }
+            }
+            .setNegativeButton(android.R.string.cancel, null)
+            .show()
     }
 
     private fun save() {
